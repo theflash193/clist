@@ -64,13 +64,62 @@ t_clist	*ft_clstnew(void const *content, size_t content_size)
 	return (ret);
 }
 
-void	ft_clstadd(t_list **alst, t_list *new)
+void	ft_clst_push_front(t_clist **alst, t_clist *new)
 {
-	t_list	*tmp;
+	t_clist	*tmp;
+	t_clist	*last;
+	t_clist	*second;
+
+	if (!*alst)
+	{
+		*alst = new;
+		new->prev = new;
+		return ;
+	}
+	last = *alst->prev;
+	second = *alst;
+	new->next = second;
+	new->prev = last;
+	second->prev = new;
+	last->next = new;
+	*alst = new;
+}
+
+void	ft_clst_push_front(t_clist **alst, t_clist *new)
+{
+	t_clist	*tmp;
+	t_clist	*last;
+	t_clist	*second;
+
+	if (!*alst)
+	{
+		*alst = new;
+		new->prev = new;
+	}
+	last = *alst->prev;
+	second = *alst;
+	while (second->next != second)
+	{
+		new->next = second;
+		new->prev = last;
+		second->prev = new;
+		last->next = new;
+		*alst = new;
+	}
+}
+
+void	ft_clst_push_back(t_clist **alst, t_clist *new)
+{
+	t_clist	*tmp;
+	t_clist	*first;
 
 	tmp = *alst;
 	if (!tmp)
+	{
 		*alst = new;
+		new->prev = new;
+	}
+	first = tmp;
 	else
 	{
 		new->next = tmp;
@@ -78,6 +127,7 @@ void	ft_clstadd(t_list **alst, t_list *new)
 	}
 }
 
+void
 int main(int argc, char const *argv[]) {
 	t_clist *clist;
 	int i;
